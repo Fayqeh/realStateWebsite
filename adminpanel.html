@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>index.html</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+material-symbols-rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="icon" href="img/favicon.ico" type="image/png+xml">
@@ -16,10 +16,81 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <style>
+        .card {
+            min-height: 200px;
+        }
+
+        #propertiesChart {
+            width: 100% !important;
+            max-width: 100%;
+            height: 400px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+        .top-nav {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.08);
+
+        }
+
+        .top-nav p {
+            margin-bottom: 0;
+            display: inline-block;
+            margin-right: 18px;
+            margin-left: 18px;
+
+        }
+
+        .top-nav a {
+            text-decoration: none;
+            color: inherit;
+            width: 34px;
+            height: 34px;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .top-nav i,
+        .top-nav spa {
+            color: green;
+            vertical-align: middle;
+
+        }
+
+        .navbar {
+            box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.08);
+
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+
+        }
+
+        .navbar img {
+            height: 60px;
+            width: 100px;
+            margin-left: 30px;
+
+        }
+
+        .navbar-brand span {
+            color: saddlebrown;
+            margin-left: 50px;
+        }
+    </style>
 </head>
 
 <body>
+
 
     <!--    Navbar1-->
 
@@ -91,7 +162,102 @@
     </nav>
 
     <main>
-        
+        <div class="container-fluid mt-4">
+            <!-- Dashboard Header -->
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                <h1 class="h2">Admin Dashboard</h1>
+            </div>
+
+            <!-- Dashboard Cards -->
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card text-white bg-primary mb-3">
+                        <div class="card-header">Total Properties</div>
+                        <div class="card-body">
+                            <h5 class="card-title" id="totalProperties">120</h5>
+                            <p class="card-text">Active properties listed on the site.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card text-white bg-success mb-3">
+                        <div class="card-header">New Users</div>
+                        <div class="card-body">
+                            <h5 class="card-title" id="newUsers">45</h5>
+                            <p class="card-text">Users registered in the last month.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card text-white bg-danger mb-3">
+                        <div class="card-header">Pending Requests</div>
+                        <div class="card-body">
+                            <h5 class="card-title" id="pendingRequests">12</h5>
+                            <p class="card-text">Property requests awaiting approval.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Recent Activities -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Recent Activities</h3>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-sm">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Activity</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activitiesTable">
+                                <tr>
+                                    <td>1</td>
+                                    <td>New property listed by User1</td>
+                                    <td>2024-09-25</td>
+                                    <td>Approved</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Property request from User2</td>
+                                    <td>2024-09-23</td>
+                                    <td>Pending</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>User3 updated profile</td>
+                                    <td>2024-09-22</td>
+                                    <td>Completed</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>New user registration: User4</td>
+                                    <td>2024-09-21</td>
+                                    <td>Completed</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="bi bi-bar-chart-line me-2"></i> Properties Over Time
+                        </div> 
+                        <div class="card-body">
+                            <canvas id="propertiesChart" width="400" height="150"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
     </main>
     <!-- footer -->
 
@@ -163,6 +329,138 @@
             </div>
         </div>
     </footer>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+        // Initialize Chart.js
+        const ctx = document.getElementById('propertiesChart').getContext('2d');
+        const propertiesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: getLast12Months(),
+                datasets: [{
+                    label: 'Properties Listed',
+                    data: generateRandomData(12, 100, 200),
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Properties Listed Over the Last 12 Months'
+                    }
+                }
+            }
+        });
+
+        // Function to get last 12 months labels
+        function getLast12Months() {
+            const months = [];
+            const date = new Date();
+            for (let i = 11; i >= 0; i--) {
+                const d = new Date(date.getFullYear(), date.getMonth() - i, 1);
+                const month = d.toLocaleString('default', { month: 'short' });
+                months.push(month);
+            }
+            return months;
+        }
+
+        // Function to generate random data
+        function generateRandomData(num, min, max) {
+            const data = [];
+            for (let i = 0; i < num; i++) {
+                data.push(Math.floor(Math.random() * (max - min + 1)) + min);
+            }
+            return data;
+        }
+
+        // Dynamic Updates (Simulated with setInterval)
+        setInterval(() => {
+            // Update Chart Data
+            const newDataPoint = Math.floor(Math.random() * (200 - 100 + 1)) + 100;
+            propertiesChart.data.datasets[0].data.shift();
+            propertiesChart.data.datasets[0].data.push(newDataPoint);
+            propertiesChart.update();
+
+            // Update Dashboard Cards
+            updateDashboardCards();
+
+            // Update Recent Activities
+            updateRecentActivities();
+        }, 5000); // Update every 5 seconds
+
+        // Function to update dashboard cards with random data
+        function updateDashboardCards() {
+            document.getElementById('totalProperties').textContent = getRandomNumber(100, 200);
+            document.getElementById('newUsers').textContent = getRandomNumber(20, 100);
+            document.getElementById('pendingRequests').textContent = getRandomNumber(5, 50);
+        }
+
+        // Function to update recent activities
+        function updateRecentActivities() {
+            const activities = [
+                { activity: 'New property listed by User5', date: getTodayDate(), status: 'Approved' },
+                { activity: 'Property request from User6', date: getYesterdayDate(), status: 'Pending' },
+                { activity: 'User7 updated profile', date: getTwoDaysAgoDate(), status: 'Completed' },
+                { activity: 'New user registration: User8', date: getThreeDaysAgoDate(), status: 'Completed' },
+            ];
+
+            const activitiesTable = document.getElementById('activitiesTable');
+            // Clear existing rows
+            activitiesTable.innerHTML = '';
+
+            // Add new activities
+            activities.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item.activity}</td>
+                    <td>${item.date}</td>
+                    <td>${item.status}</td>
+                `;
+                activitiesTable.appendChild(row);
+            });
+        }
+
+        // Helper functions to get dates
+        function getTodayDate() {
+            const today = new Date();
+            return today.toISOString().split('T')[0];
+        }
+
+        function getYesterdayDate() {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            return yesterday.toISOString().split('T')[0];
+        }
+
+        function getTwoDaysAgoDate() {
+            const twoDaysAgo = new Date();
+            twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+            return twoDaysAgo.toISOString().split('T')[0];
+        }
+
+        function getThreeDaysAgoDate() {
+            const threeDaysAgo = new Date();
+            threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+            return threeDaysAgo.toISOString().split('T')[0];
+        }
+
+        // Function to generate random numbers within a range
+        function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        });
+    </script>
 
 </body>
 
